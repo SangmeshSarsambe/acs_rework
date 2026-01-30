@@ -12,10 +12,14 @@ import java.util.Scanner;
 public class SimpleServer {
     private static JmDNS jmdns;
     private static ServerSocket serverSocket;
-    private static boolean isRunning = true;
+    private static volatile boolean isRunning = true;  // volatile for thread visibility
     private static InetAddress localAddress;
+    
+    // Shutdown lock for coordinating shutdown
+    private static final Object shutdownLock = new Object();
+    private static volatile boolean shutdownInitiated = false;  // volatile for thread visibility
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         try {
             // Get actual IP address (not loopback)
             localAddress = IPAddressUtil.getActualIPAddress();
@@ -50,26 +54,48 @@ public class SimpleServer {
             serverSocket = new ServerSocket(port);
             System.out.println("[Server] Waiting for client connections...\n");
 
-            // Shutdown hook
-            Runtime.getRuntime().addShutdownHook(new Thread(SimpleServer::shutdown));
+            // Shutdown hook - only for Ctrl+C / kill signals
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                if (!shutdownInitiated) {
+                    System.out.println("\n[Server] Shutdown signal received (Ctrl+C)");
+                    shutdown();
+                }
+            }));
 
             // Thread to accept client connections
             Thread acceptThread = new Thread(SimpleServer::acceptConnections);
             acceptThread.setName("ConnectionAcceptor");
+            acceptThread.setDaemon(false);  // Keep JVM alive
             acceptThread.start();
 
             // Thread for interactive console
             Thread consoleThread = new Thread(SimpleServer::interactiveConsole);
             consoleThread.setName("InteractiveConsole");
+            consoleThread.setDaemon(false);  // Keep JVM alive
             consoleThread.start();
 
-            // Keep server alive
-            Thread.sleep(Long.MAX_VALUE);
+            // Keep server alive until shutdown is requested
+            synchronized (shutdownLock) {
+                while (isRunning) {
+                    try {
+                        shutdownLock.wait();
+                    } catch (InterruptedException e) {
+                        System.out.println("[Server] Main thread interrupted");
+                        break;
+                    }
+                }
+            }
+            
+            System.out.println("[Server] Main thread exiting...");
 
         } catch (Exception e) {
             System.err.println("[Server] Error: " + e.getMessage());
             e.printStackTrace();
-            shutdown();
+        } finally {
+            // Ensure cleanup happens
+            if (!shutdownInitiated) {
+                shutdown();
+            }
         }
     }
 
@@ -77,6 +103,7 @@ public class SimpleServer {
      * Accept incoming client connections
      */
     private static void acceptConnections() {
+        System.out.println("[AcceptThread] Started");
         while (isRunning && !serverSocket.isClosed()) {
             try {
                 Socket clientSocket = serverSocket.accept();
@@ -85,18 +112,22 @@ public class SimpleServer {
                 ClientHandler handler = new ClientHandler(clientSocket);
                 Thread clientThread = new Thread(handler);
                 clientThread.setName("ClientHandler-" + clientSocket.getInetAddress().getHostAddress());
+                clientThread.setDaemon(true);  // Don't keep JVM alive for client handlers
                 clientThread.start();
                 
             } catch (SocketException e) {
                 if (isRunning) {
                     System.err.println("[Server] Socket error: " + e.getMessage());
                 }
+                // Socket closed during shutdown - exit gracefully
+                break;
             } catch (IOException e) {
                 if (isRunning) {
                     System.err.println("[Server] Error accepting connection: " + e.getMessage());
                 }
             }
         }
+        System.out.println("[AcceptThread] Exiting");
     }
 
     /**
@@ -112,27 +143,35 @@ public class SimpleServer {
         while (isRunning) {
             try {
                 System.out.print("server> ");
-                if (!scanner.hasNextLine()) break;
+                if (!scanner.hasNextLine()) {
+                    System.out.println("[Console] No more input available");
+                    break;
+                }
                 
                 String input = scanner.nextLine().trim();
                 
                 if (input.isEmpty()) continue;
                 
-                processCommand(input);
+                boolean shouldExit = processCommand(input);
+                if (shouldExit) {
+                    break;  // Exit the console loop
+                }
                 
             } catch (Exception e) {
                 System.err.println("[Console] Error: " + e.getMessage());
+                if (!isRunning) break;
             }
         }
         
-        // Close scanner to prevent resource leak
+        System.out.println("[Console] Console thread exiting");
         scanner.close();
     }
 
     /**
      * Process console commands
+     * @return true if server should shutdown
      */
-    private static void processCommand(String command) {
+    private static boolean processCommand(String command) {
         String[] parts = command.split(" ", 2);
         String cmd = parts[0].toLowerCase();
         String args = parts.length > 1 ? parts[1] : "";
@@ -195,13 +234,15 @@ public class SimpleServer {
             case "exit":
             case "quit":
             case "shutdown":
-                System.out.println("[Server] Shutting down...");
+                System.out.println("[Server] Initiating shutdown...");
                 shutdown();
-                break;
+                return true;  // Signal to exit console loop
 
             default:
                 System.out.println("Unknown command: " + cmd + ". Type 'help' for available commands.");
         }
+        
+        return false;  // Continue running
     }
 
     /**
@@ -299,28 +340,45 @@ public class SimpleServer {
      * Shutdown server gracefully
      */
     private static void shutdown() {
-        isRunning = false;
+        synchronized (shutdownLock) {
+            if (shutdownInitiated) {
+                System.out.println("[Server] Shutdown already in progress...");
+                return;  // Already shutting down
+            }
+            shutdownInitiated = true;
+            isRunning = false;
+        }
+
+        System.out.println("[Server] Shutting down...");
+
         try {
             // Disconnect all clients
+            System.out.println("[Server] Disconnecting all clients...");
             ConnectionManager.disconnectAll();
             
-            // Close server socket
+            // Close server socket (this will unblock accept())
             if (serverSocket != null && !serverSocket.isClosed()) {
+                System.out.println("[Server] Closing server socket...");
                 serverSocket.close();
             }
             
             // Unregister mDNS service
             if (jmdns != null) {
+                System.out.println("[Server] Unregistering mDNS service...");
                 jmdns.unregisterAllServices();
                 jmdns.close();
             }
             
-            System.out.println("\n[Server] Server shutdown complete");
+            System.out.println("[Server] Server shutdown complete");
+            
         } catch (Exception e) {
+            System.err.println("[Server] Error during shutdown: " + e.getMessage());
             e.printStackTrace();
+        } finally {
+            // Wake up the main thread to exit
+            synchronized (shutdownLock) {
+                shutdownLock.notifyAll();
+            }
         }
-        System.exit(0);
     }
-
-
 }

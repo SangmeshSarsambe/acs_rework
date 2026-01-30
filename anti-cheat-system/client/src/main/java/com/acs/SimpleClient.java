@@ -67,8 +67,13 @@ public class SimpleClient {
                     System.out.println("║ Desc : " + String.format("%-30s", info.getNiceTextString()) + "║");
                     System.out.println("╚════════════════════════════════════════╝\n");
 
-                    // Attempt to connect
-                    connectToServer();
+                    // FIX: Only connect if not already connected (fixes Windows duplicate connections)
+                    if (!isConnected) {
+                        // Attempt to connect
+                        connectToServer();
+                    } else {
+                        System.out.println("[Discovery] Already connected, ignoring duplicate service resolve");
+                    }
                 }
             });
 
