@@ -2,48 +2,325 @@ package com.acs;
 
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceInfo;
-import java.net.InetAddress;
+import java.io.*;
+import java.net.*;
+import java.net.Inet4Address;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
+import java.util.Scanner;
 
 public class SimpleServer {
+    private static JmDNS jmdns;
+    private static ServerSocket serverSocket;
+    private static boolean isRunning = true;
+    private static InetAddress localAddress;
 
     public static void main(String[] args) throws Exception {
+        try {
+            // Get actual IP address (not loopback)
+            localAddress = IPAddressUtil.getActualIPAddress();
 
-        // Get local host IP
-        InetAddress localAddress = InetAddress.getLocalHost();
+            // Create JmDNS instance
+            jmdns = JmDNS.create(localAddress);
 
-        // Create JmDNS instance
-        JmDNS jmdns = JmDNS.create(localAddress);
+            // Service details
+            String serviceType = "_acs._tcp.local.";
+            String serviceName = "SimpleServer";
+            int port = 6000;
 
-        // Service details
-        String serviceType = "_acs._tcp.local.";
-        String serviceName = "SimpleServer";
-        int port = 6000;
+            ServiceInfo serviceInfo = ServiceInfo.create(
+                    serviceType,
+                    serviceName,
+                    port,
+                    "Anti Cheat System Server"
+            );
 
-        ServiceInfo serviceInfo = ServiceInfo.create(
-                serviceType,
-                serviceName,
-                port,
-                "Hello , this is Anti Cheat System mDNS Server"
-        );
+            // Register service with mDNS
+            jmdns.registerService(serviceInfo);
 
-        // Register service
-        jmdns.registerService(serviceInfo);
+            System.out.println("╔════════════════════════════════════════╗");
+            System.out.println("║   Anti Cheat System Server Started     ║");
+            System.out.println("╠════════════════════════════════════════╣");
+            System.out.println("║ IP   : " + String.format("%-30s", localAddress.getHostAddress()) + "║");
+            System.out.println("║ Port : " + String.format("%-30s", port) + "║");
+            System.out.println("║ Service: " + String.format("%-28s", serviceName) + "║");
+            System.out.println("╚════════════════════════════════════════╝\n");
 
-        System.out.println("[Server] SimpleServer registered via mDNS");
-        System.out.println("[Server] IP   : " + localAddress.getHostAddress());
-        System.out.println("[Server] Port : " + port);
+            // Create server socket
+            serverSocket = new ServerSocket(port);
+            System.out.println("[Server] Waiting for client connections...\n");
 
-        // Keep server alive
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            // Shutdown hook
+            Runtime.getRuntime().addShutdownHook(new Thread(SimpleServer::shutdown));
+
+            // Thread to accept client connections
+            Thread acceptThread = new Thread(SimpleServer::acceptConnections);
+            acceptThread.setName("ConnectionAcceptor");
+            acceptThread.start();
+
+            // Thread for interactive console
+            Thread consoleThread = new Thread(SimpleServer::interactiveConsole);
+            consoleThread.setName("InteractiveConsole");
+            consoleThread.start();
+
+            // Keep server alive
+            Thread.sleep(Long.MAX_VALUE);
+
+        } catch (Exception e) {
+            System.err.println("[Server] Error: " + e.getMessage());
+            e.printStackTrace();
+            shutdown();
+        }
+    }
+
+    /**
+     * Accept incoming client connections
+     */
+    private static void acceptConnections() {
+        while (isRunning && !serverSocket.isClosed()) {
             try {
-                System.out.println("\n[Server] Shutting down...");
+                Socket clientSocket = serverSocket.accept();
+                
+                // Handle each client in a separate thread
+                ClientHandler handler = new ClientHandler(clientSocket);
+                Thread clientThread = new Thread(handler);
+                clientThread.setName("ClientHandler-" + clientSocket.getInetAddress().getHostAddress());
+                clientThread.start();
+                
+            } catch (SocketException e) {
+                if (isRunning) {
+                    System.err.println("[Server] Socket error: " + e.getMessage());
+                }
+            } catch (IOException e) {
+                if (isRunning) {
+                    System.err.println("[Server] Error accepting connection: " + e.getMessage());
+                }
+            }
+        }
+    }
+
+    /**
+     * Interactive console to manage server and send messages
+     */
+    private static void interactiveConsole() {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("╔═══════════════════════════════════════════════════╗");
+        System.out.println("║        Server Console - Type 'help' for commands    ║");
+        System.out.println("╚═══════════════════════════════════════════════════╝\n");
+
+        while (isRunning) {
+            try {
+                System.out.print("server> ");
+                if (!scanner.hasNextLine()) break;
+                
+                String input = scanner.nextLine().trim();
+                
+                if (input.isEmpty()) continue;
+                
+                processCommand(input);
+                
+            } catch (Exception e) {
+                System.err.println("[Console] Error: " + e.getMessage());
+            }
+        }
+        
+        // Close scanner to prevent resource leak
+        scanner.close();
+    }
+
+    /**
+     * Process console commands
+     */
+    private static void processCommand(String command) {
+        String[] parts = command.split(" ", 2);
+        String cmd = parts[0].toLowerCase();
+        String args = parts.length > 1 ? parts[1] : "";
+
+        switch (cmd) {
+            case "help":
+                printHelp();
+                break;
+
+            case "list":
+            case "clients":
+                ConnectionManager.displayAllClients();
+                break;
+
+            case "send":
+                if (args.isEmpty()) {
+                    System.out.println("Usage: send <client_ip:port> <message>");
+                    System.out.println("Example: send 192.168.1.100:54321 Hello Client");
+                } else {
+                    String[] sendParts = args.split(" ", 2);
+                    if (sendParts.length < 2) {
+                        System.out.println("Usage: send <client_ip:port> <message>");
+                    } else {
+                        String clientId = sendParts[0];
+                        String message = sendParts[1];
+                        sendMessageToClient(clientId, message);
+                    }
+                }
+                break;
+
+            case "broadcast":
+                if (args.isEmpty()) {
+                    System.out.println("Usage: broadcast <message>");
+                } else {
+                    broadcastToAllClients(args);
+                }
+                break;
+
+            case "count":
+                int count = ConnectionManager.getClientCount();
+                System.out.println("Currently connected clients: " + count);
+                break;
+
+            case "disconnect":
+                if (args.isEmpty()) {
+                    System.out.println("Usage: disconnect <client_ip:port>");
+                } else {
+                    disconnectClient(args);
+                }
+                break;
+
+            case "status":
+                printServerStatus();
+                break;
+
+            case "clear":
+                clearScreen();
+                break;
+
+            case "exit":
+            case "quit":
+            case "shutdown":
+                System.out.println("[Server] Shutting down...");
+                shutdown();
+                break;
+
+            default:
+                System.out.println("Unknown command: " + cmd + ". Type 'help' for available commands.");
+        }
+    }
+
+    /**
+     * Send message to a specific client
+     */
+    private static void sendMessageToClient(String clientId, String message) {
+        boolean success = ConnectionManager.sendMessageToClient(clientId, "MSG: " + message);
+        if (success) {
+            System.out.println("[Server] Message sent to " + clientId);
+        } else {
+            System.out.println("[Server] Failed to send message. Client " + clientId + " not found or not connected.");
+            System.out.println("[Server] Available clients:");
+            for (String ip : ConnectionManager.getConnectedClientIPs()) {
+                System.out.println("  - " + ip);
+            }
+        }
+    }
+
+    /**
+     * Broadcast message to all connected clients
+     */
+    private static void broadcastToAllClients(String message) {
+        int clientCount = ConnectionManager.getClientCount();
+        if (clientCount == 0) {
+            System.out.println("[Server] No clients connected.");
+        } else {
+            ConnectionManager.broadcastMessage("MSG: " + message);
+            System.out.println("[Server] Broadcast sent to " + clientCount + " client(s)");
+        }
+    }
+
+    /**
+     * Disconnect a specific client
+     */
+    private static void disconnectClient(String clientId) {
+        ClientHandler handler = ConnectionManager.getClient(clientId);
+        if (handler != null) {
+            handler.disconnect();
+            System.out.println("[Server] Client " + clientId + " disconnected.");
+        } else {
+            System.out.println("[Server] Client " + clientId + " not found.");
+        }
+    }
+
+    /**
+     * Print server status
+     */
+    private static void printServerStatus() {
+        System.out.println("\n╔═══════════════════════════════════════╗");
+        System.out.println("║        Server Status                  ║");
+        System.out.println("╠═══════════════════════════════════════╣");
+        System.out.println("║ IP Address: " + String.format("%-24s", localAddress.getHostAddress()) + "║");
+        System.out.println("║ Port: " + String.format("%-29s", "6000") + "║");
+        System.out.println("║ Connected Clients: " + String.format("%-20s", ConnectionManager.getClientCount()) + "║");
+        System.out.println("║ Server Status: " + String.format("%-23s", isRunning ? "RUNNING" : "STOPPED") + "║");
+        System.out.println("╚═══════════════════════════════════════╝\n");
+    }
+
+    /**
+     * Print help menu
+     */
+    private static void printHelp() {
+        System.out.println("\n╔════════════════════════════════════════════════════════════╗");
+        System.out.println("║                    Available Commands                       ║");
+        System.out.println("╠════════════════════════════════════════════════════════════╣");
+        System.out.println("║ help                     - Show this help menu              ║");
+        System.out.println("║ list / clients           - List all connected clients      ║");
+        System.out.println("║ count                    - Show number of clients          ║");
+        System.out.println("║ status                   - Show server status              ║");
+        System.out.println("║ send <ip:port> <msg>     - Send message to client          ║");
+        System.out.println("║ broadcast <message>      - Broadcast to all clients        ║");
+        System.out.println("║ disconnect <ip:port>     - Disconnect specific client      ║");
+        System.out.println("║ clear                    - Clear console                   ║");
+        System.out.println("║ exit / shutdown          - Shutdown server                 ║");
+        System.out.println("╚════════════════════════════════════════════════════════════╝\n");
+    }
+
+    /**
+     * Clear console screen
+     */
+    private static void clearScreen() {
+        try {
+            if (System.getProperty("os.name").contains("Windows")) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+            }
+        } catch (Exception e) {
+            System.out.println("[Console] Error clearing screen");
+        }
+    }
+
+    /**
+     * Shutdown server gracefully
+     */
+    private static void shutdown() {
+        isRunning = false;
+        try {
+            // Disconnect all clients
+            ConnectionManager.disconnectAll();
+            
+            // Close server socket
+            if (serverSocket != null && !serverSocket.isClosed()) {
+                serverSocket.close();
+            }
+            
+            // Unregister mDNS service
+            if (jmdns != null) {
                 jmdns.unregisterAllServices();
                 jmdns.close();
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-        }));
-
-        Thread.sleep(Long.MAX_VALUE);
+            
+            System.out.println("\n[Server] Server shutdown complete");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.exit(0);
     }
+
+
 }

@@ -1,1 +1,3 @@
-com\acs\SimpleServer.class
+com/acs/ConnectionManager.class
+com/acs/ClientHandler.class
+com/acs/SimpleServer.class
