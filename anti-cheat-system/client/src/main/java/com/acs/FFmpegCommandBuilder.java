@@ -85,19 +85,18 @@ public class FFmpegCommandBuilder {
                 case "nvidia" -> {
                     cmd.add("-c:v"); cmd.add("h264_nvenc");
                     cmd.add("-preset"); cmd.add("p1");
-                    cmd.add("-tune"); cmd.add("zerolatency");
                     cmd.add("-rc"); cmd.add("cbr");
                     cmd.add("-b:v"); cmd.add("5M");
                     cmd.add("-maxrate"); cmd.add("5M");
                     cmd.add("-bufsize"); cmd.add("5M");
                     cmd.add("-g"); cmd.add("30");
                     cmd.add("-bf"); cmd.add("0");
+                    cmd.add("-delay"); cmd.add("0");
                 }
                 case "amd" -> {
                     if (os.contains("win")) {
                         // Windows AMD → AMF
                         cmd.add("-c:v"); cmd.add("h264_amf");
-                        cmd.add("-tune"); cmd.add("zerolatency");
                         cmd.add("-b:v"); cmd.add("5M");
                         cmd.add("-maxrate"); cmd.add("5M");
                         cmd.add("-bufsize"); cmd.add("5M");
@@ -118,7 +117,7 @@ public class FFmpegCommandBuilder {
                 case "intel" -> {
                     cmd.add("-c:v"); cmd.add("h264_qsv");
                     cmd.add("-preset"); cmd.add("veryfast");
-                    cmd.add("-tune"); cmd.add("zerolatency");
+                    cmd.add("-async_depth"); cmd.add("1");
                     cmd.add("-b:v"); cmd.add("5M");
                     cmd.add("-maxrate"); cmd.add("5M");
                     cmd.add("-bufsize"); cmd.add("5M");
@@ -163,4 +162,5 @@ public class FFmpegCommandBuilder {
             return null;
         }
     }
+
 }
