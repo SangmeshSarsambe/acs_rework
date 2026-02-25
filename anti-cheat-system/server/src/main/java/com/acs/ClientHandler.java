@@ -10,14 +10,14 @@ public class ClientHandler extends Thread {
     private String clientId;
     private boolean isRunning = true;
     private long lastHeartbeat;
-    private static final long HEARTBEAT_TIMEOUT = 30000; // 30 seconds
-    private static final long HEARTBEAT_CHECK_INTERVAL = 5000; // Check every 5 seconds
+    private static final long HEARTBEAT_TIMEOUT = 30000;
+    private static final long HEARTBEAT_CHECK_INTERVAL = 5000;
 
     public ClientHandler(Socket socket) {
         this.socket = socket;
         this.lastHeartbeat = System.currentTimeMillis();
         this.clientId = socket.getInetAddress().getHostAddress() + ":" + socket.getPort();
-        
+
         try {
             this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -30,19 +30,15 @@ public class ClientHandler extends Thread {
     public void run() {
         try {
             System.out.println("[Handler] Client connected: " + clientId);
-            
-            // Add client to connection manager
+
             ConnectionManager.addClient(clientId, this);
-            
-            // Send welcome message
+
             sendMessage("WELCOME: Connected to Anti Cheat System");
 
-            // Start heartbeat monitoring thread
             Thread heartbeatMonitor = new Thread(this::monitorHeartbeat);
             heartbeatMonitor.setDaemon(true);
             heartbeatMonitor.start();
 
-            // Listen for messages from client
             String message;
             while (isRunning && (message = reader.readLine()) != null) {
                 handleMessage(message);
@@ -56,21 +52,18 @@ public class ClientHandler extends Thread {
         }
     }
 
-    /**
-     * Monitor heartbeat and disconnect if timeout
-     */
     private void monitorHeartbeat() {
         while (isRunning && socket != null && !socket.isClosed()) {
             try {
                 long timeSinceHeartbeat = System.currentTimeMillis() - lastHeartbeat;
-                
+
                 if (timeSinceHeartbeat > HEARTBEAT_TIMEOUT) {
-                    System.out.println("[Handler] Heartbeat timeout for " + clientId + 
+                    System.out.println("[Handler] Heartbeat timeout for " + clientId +
                                      ". No heartbeat for " + (timeSinceHeartbeat / 1000) + " seconds");
                     disconnect();
                     break;
                 }
-                
+
                 Thread.sleep(HEARTBEAT_CHECK_INTERVAL);
             } catch (InterruptedException e) {
                 break;
@@ -81,12 +74,10 @@ public class ClientHandler extends Thread {
     private void handleMessage(String message) {
         if (message.equals("HEARTBEAT")) {
             lastHeartbeat = System.currentTimeMillis();
-            System.out.println("[Handler] Heartbeat from " + clientId);
-            sendMessage("HEARTBEAT_ACK");
+            sendHeartbeatAck("HEARTBEAT_ACK");
         } else if (message.startsWith("MSG:")) {
             String content = message.substring(4).trim();
             System.out.println("[Handler] Message from " + clientId + ": " + content);
-            sendMessage("ACK: Message received");
         } else if (message.equals("DISCONNECT")) {
             System.out.println("[Handler] Client requested disconnect: " + clientId);
             disconnect();
@@ -111,9 +102,21 @@ public class ClientHandler extends Thread {
         }
     }
 
+    public void sendHeartbeatAck(String message) {
+        try {
+            if (writer != null && !socket.isClosed()) {
+                writer.write(message + "\n");
+                writer.flush();
+            }
+        } catch (IOException e) {
+            System.out.println("[Handler] Error sending to " + clientId + ": " + e.getMessage());
+            disconnect();
+        }
+    }
+
     public void disconnect() {
         if (!isRunning) return;
-        
+
         isRunning = false;
         try {
             if (reader != null) reader.close();
@@ -123,8 +126,7 @@ public class ClientHandler extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
-        // Remove from connection manager
+
         ConnectionManager.removeClient(clientId);
     }
 
@@ -137,11 +139,24 @@ public class ClientHandler extends Thread {
         return clientId;
     }
 
-    /**
-     * Check if the client connection is alive and active
-     * (Different from Thread.isAlive() which checks thread status)
-     */
     public boolean isClientAlive() {
         return isRunning && socket != null && socket.isConnected() && !socket.isClosed();
+    }
+
+    /**
+     * Server's own IP address on this socket connection.
+     * This is the IP the client connected to — same IP both VLC and FFmpeg use.
+     */
+    public String getServerIp() {
+        return socket.getLocalAddress().getHostAddress();
+    }
+
+    /**
+     * Server-side port of this specific socket connection.
+     * The client reads this same port from its own socket.getPort().
+     * VLC listens on this port; FFmpeg streams to this port.
+     */
+    public int getServerPort() {
+        return socket.getLocalPort();
     }
 }
