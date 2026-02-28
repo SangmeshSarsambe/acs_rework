@@ -11,7 +11,8 @@ import java.util.List;
 public class FFmpegCommandBuilder {
 
     private static String resolveFfmpegExe() {
-        // 1. JAR-relative (production / pendrive)
+        // 1. JAR-relative (production / pendrive)'
+        
         try {
             Path jarDir = Paths.get(
                     FFmpegCommandBuilder.class
@@ -252,3 +253,4 @@ public class FFmpegCommandBuilder {
         }
     }
 }
+
