@@ -1,0 +1,32 @@
+# USB Monitoring Client Configuration
+
+# Server Configuration
+server:
+  url: "http://localhost:8000"
+  endpoint: "/usb-event"
+  timeout: 10
+  retry_attempts: 3
+  retry_delay: 5
+
+# Client Configuration
+client:
+  device_id: "auto"  # auto-detect or specify manually
+  poll_interval: 2  # seconds between USB checks
+  
+# Logging Configuration
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  file: "usb_monitor.log"
+  max_size: 10485760  # 10MB
+  backup_count: 5
+
+# Monitoring Configuration
+monitoring:
+  track_file_open: true  # Track file open events
+  track_file_close: true  # Track file close events
+  excluded_extensions:  # Files to ignore
+    - ".tmp"
+    - ".swp"
+    - "~"
+    - "~$"
+    - ".lnk"

@@ -1,0 +1,204 @@
+2026-02-09 00:17:09,879 - USBMonitor - INFO - [usb_monitor_client.py:38] - ============================================================
+2026-02-09 00:17:09,881 - USBMonitor - INFO - [usb_monitor_client.py:39] - USB Monitoring Client Starting
+2026-02-09 00:17:09,881 - USBMonitor - INFO - [usb_monitor_client.py:40] - ============================================================
+2026-02-09 00:17:09,881 - USBMonitor - INFO - [usb_monitor_client.py:44] - Device ID: DESKTOP-CD6N3N9
+2026-02-09 00:17:09,882 - USBMonitor - INFO - [usb_monitor_client.py:48] - Username: Bhumi
+2026-02-09 00:17:09,883 - USBMonitor.APIClient - INFO - [api_client.py:48] - Retry thread started
+2026-02-09 00:17:11,930 - USBMonitor.APIClient - INFO - [api_client.py:161] - Server connection test successful
+2026-02-09 00:17:11,931 - USBMonitor - INFO - [usb_monitor_client.py:61] - Successfully connected to server
+2026-02-09 00:17:11,932 - USBMonitor.EventDetector - INFO - [event_detector.py:136] - USB Detector initialized for Windows
+2026-02-09 00:17:11,932 - USBMonitor - INFO - [usb_monitor_client.py:146] - Starting USB monitoring...
+2026-02-09 00:17:11,932 - USBMonitor.EventDetector - INFO - [event_detector.py:280] - USB monitoring loop started
+2026-02-09 00:17:11,932 - USBMonitor.EventDetector - INFO - [event_detector.py:356] - USB monitoring started
+2026-02-09 00:17:11,932 - USBMonitor - INFO - [usb_monitor_client.py:151] - Monitoring active (poll interval: 2s)
+2026-02-09 00:17:45,957 - USBMonitor.EventDetector - INFO - [event_detector.py:291] - USB drive inserted: E:\
+2026-02-09 00:17:45,958 - USBMonitor - INFO - [usb_monitor_client.py:129] - Event: usb_inserted - E:\ - None
+2026-02-09 00:17:45,964 - USBMonitor.EventDetector - INFO - [event_detector.py:249] - Started file monitoring for E:\
+2026-02-09 00:17:48,053 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: usb_inserted - E:\
+2026-02-09 00:18:18,866 - USBMonitor - INFO - [usb_monitor_client.py:129] - Event: file_modified - E:\ - anti_cheat_system_working.7z
+2026-02-09 00:18:19,114 - USBMonitor - INFO - [usb_monitor_client.py:129] - Event: file_modified - E:\ - anti_cheat_system_working.7z
+2026-02-09 00:18:20,928 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: file_modified - E:\
+2026-02-09 00:18:21,177 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: file_modified - E:\
+2026-02-09 00:19:41,452 - USBMonitor - INFO - [usb_monitor_client.py:129] - Event: file_created - E:\ - Assignment 5.docx
+2026-02-09 00:19:41,454 - USBMonitor - INFO - [usb_monitor_client.py:129] - Event: file_modified - E:\ - Assignment 5.docx
+2026-02-09 00:19:41,463 - USBMonitor - INFO - [usb_monitor_client.py:129] - Event: file_modified - E:\ - Assignment 5.docx
+2026-02-09 00:19:41,599 - USBMonitor - INFO - [usb_monitor_client.py:129] - Event: file_modified - E:\ - Assignment 5.docx
+2026-02-09 00:19:43,046 - USBMonitor - INFO - [usb_monitor_client.py:129] - Event: file_created - E:\ - Assignment 5.docx
+2026-02-09 00:19:43,051 - USBMonitor - INFO - [usb_monitor_client.py:129] - Event: file_modified - E:\ - Assignment 5.docx
+2026-02-09 00:19:43,055 - USBMonitor - INFO - [usb_monitor_client.py:129] - Event: file_modified - E:\ - Assignment 5.docx
+2026-02-09 00:19:43,058 - USBMonitor - INFO - [usb_monitor_client.py:129] - Event: file_modified - E:\ - Assignment 5.docx
+2026-02-09 00:19:43,505 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: file_modified - E:\
+2026-02-09 00:19:43,505 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: file_created - E:\
+2026-02-09 00:19:43,520 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: file_modified - E:\
+2026-02-09 00:19:43,653 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: file_modified - E:\
+2026-02-09 00:19:45,083 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: file_created - E:\
+2026-02-09 00:19:45,093 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: file_modified - E:\
+2026-02-09 00:19:45,116 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: file_modified - E:\
+2026-02-09 00:19:45,116 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: file_modified - E:\
+2026-02-09 00:19:53,351 - USBMonitor - INFO - [usb_monitor_client.py:129] - Event: file_modified - E:\ - Assignment 5.docx
+2026-02-09 00:19:55,401 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: file_modified - E:\
+2026-02-09 00:26:12,974 - USBMonitor - INFO - [usb_monitor_client.py:140] - Received signal 2, shutting down...
+2026-02-09 00:26:12,976 - USBMonitor - INFO - [usb_monitor_client.py:163] - Shutting down USB monitoring client...
+2026-02-09 00:26:12,976 - USBMonitor.EventDetector - INFO - [event_detector.py:360] - Stopping USB monitoring...
+2026-02-09 00:26:13,000 - USBMonitor.EventDetector - INFO - [event_detector.py:268] - Stopped file monitoring for E:\
+2026-02-09 00:26:14,381 - USBMonitor.EventDetector - INFO - [event_detector.py:335] - USB monitoring loop stopped
+2026-02-09 00:26:14,385 - USBMonitor.EventDetector - INFO - [event_detector.py:373] - USB monitoring stopped
+2026-02-09 00:26:14,386 - USBMonitor.APIClient - INFO - [api_client.py:170] - Shutting down API client...
+2026-02-09 00:26:15,243 - USBMonitor.APIClient - INFO - [api_client.py:174] - API client shutdown complete
+2026-02-09 00:26:15,243 - USBMonitor - INFO - [usb_monitor_client.py:171] - Shutdown complete
+2026-02-09 00:26:25,116 - USBMonitor - INFO - [usb_monitor_client.py:38] - ============================================================
+2026-02-09 00:26:25,116 - USBMonitor - INFO - [usb_monitor_client.py:39] - USB Monitoring Client Starting
+2026-02-09 00:26:25,117 - USBMonitor - INFO - [usb_monitor_client.py:40] - ============================================================
+2026-02-09 00:26:25,117 - USBMonitor - INFO - [usb_monitor_client.py:44] - Device ID: DESKTOP-CD6N3N9
+2026-02-09 00:26:25,117 - USBMonitor - INFO - [usb_monitor_client.py:48] - Username: Bhumi
+2026-02-09 00:26:25,118 - USBMonitor.APIClient - INFO - [api_client.py:48] - Retry thread started
+2026-02-09 00:26:27,149 - USBMonitor.APIClient - INFO - [api_client.py:161] - Server connection test successful
+2026-02-09 00:26:27,149 - USBMonitor - INFO - [usb_monitor_client.py:61] - Successfully connected to server
+2026-02-09 00:26:27,426 - USBMonitor.FileAccessMonitor - INFO - [file_access_monitor.py:47] - File Access Monitor initialized
+2026-02-09 00:26:27,427 - USBMonitor.EventDetector - INFO - [event_detector.py:186] - File access monitoring enabled
+2026-02-09 00:26:27,427 - USBMonitor.EventDetector - INFO - [event_detector.py:194] - USB Detector initialized for Windows
+2026-02-09 00:26:27,428 - USBMonitor - INFO - [usb_monitor_client.py:147] - Starting USB monitoring...
+2026-02-09 00:26:27,429 - USBMonitor.EventDetector - INFO - [event_detector.py:346] - USB monitoring loop started
+2026-02-09 00:26:27,429 - USBMonitor.EventDetector - INFO - [event_detector.py:445] - USB monitoring started
+2026-02-09 00:26:27,430 - USBMonitor - INFO - [usb_monitor_client.py:152] - Monitoring active (poll interval: 2s)
+2026-02-09 00:26:27,431 - USBMonitor.EventDetector - INFO - [event_detector.py:357] - USB drive inserted: E:\
+2026-02-09 00:26:27,434 - USBMonitor - INFO - [usb_monitor_client.py:130] - Event: usb_inserted - E:\ - None
+2026-02-09 00:26:27,436 - USBMonitor.EventDetector - INFO - [event_detector.py:307] - Started file monitoring for E:\
+2026-02-09 00:26:27,439 - USBMonitor.FileAccessMonitor - INFO - [file_access_monitor.py:118] - Started file access monitoring for E:\
+2026-02-09 00:26:27,440 - USBMonitor.FileAccessMonitor - INFO - [file_access_monitor.py:195] - Started file access monitoring for E:\
+2026-02-09 00:26:29,482 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: usb_inserted - E:\
+2026-02-09 00:26:51,457 - USBMonitor.EventDetector - INFO - [event_detector.py:379] - USB drive removed: E:\
+2026-02-09 00:26:51,469 - USBMonitor.EventDetector - INFO - [event_detector.py:330] - Stopped file monitoring for E:\
+2026-02-09 00:26:53,456 - USBMonitor.FileAccessMonitor - INFO - [file_access_monitor.py:167] - Stopped file access monitoring for E:\
+2026-02-09 00:26:53,457 - USBMonitor.FileAccessMonitor - INFO - [file_access_monitor.py:223] - Stopped file access monitoring for E:\
+2026-02-09 00:26:53,458 - USBMonitor - INFO - [usb_monitor_client.py:130] - Event: usb_removed - E:\ - None
+2026-02-09 00:26:55,509 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: usb_removed - E:\
+2026-02-09 00:27:03,470 - USBMonitor.EventDetector - INFO - [event_detector.py:357] - USB drive inserted: E:\
+2026-02-09 00:27:03,470 - USBMonitor - INFO - [usb_monitor_client.py:130] - Event: usb_inserted - E:\ - None
+2026-02-09 00:27:03,472 - USBMonitor.EventDetector - INFO - [event_detector.py:307] - Started file monitoring for E:\
+2026-02-09 00:27:03,474 - USBMonitor.FileAccessMonitor - INFO - [file_access_monitor.py:118] - Started file access monitoring for E:\
+2026-02-09 00:27:03,474 - USBMonitor.FileAccessMonitor - INFO - [file_access_monitor.py:195] - Started file access monitoring for E:\
+2026-02-09 00:27:05,524 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: usb_inserted - E:\
+2026-02-09 00:28:13,047 - USBMonitor - INFO - [usb_monitor_client.py:130] - Event: file_modified - E:\ - Assignment 5.docx
+2026-02-09 00:28:15,112 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: file_modified - E:\
+2026-02-09 00:28:44,649 - USBMonitor - INFO - [usb_monitor_client.py:141] - Received signal 2, shutting down...
+2026-02-09 00:28:44,650 - USBMonitor - INFO - [usb_monitor_client.py:164] - Shutting down USB monitoring client...
+2026-02-09 00:28:44,650 - USBMonitor.EventDetector - INFO - [event_detector.py:449] - Stopping USB monitoring...
+2026-02-09 00:28:44,665 - USBMonitor.EventDetector - INFO - [event_detector.py:330] - Stopped file monitoring for E:\
+2026-02-09 00:28:45,528 - USBMonitor.FileAccessMonitor - INFO - [file_access_monitor.py:167] - Stopped file access monitoring for E:\
+2026-02-09 00:28:45,529 - USBMonitor.FileAccessMonitor - INFO - [file_access_monitor.py:223] - Stopped file access monitoring for E:\
+2026-02-09 00:28:45,549 - USBMonitor.EventDetector - INFO - [event_detector.py:404] - USB monitoring loop stopped
+2026-02-09 00:28:45,549 - USBMonitor.EventDetector - INFO - [event_detector.py:466] - USB monitoring stopped
+2026-02-09 00:28:45,550 - USBMonitor.APIClient - INFO - [api_client.py:170] - Shutting down API client...
+2026-02-09 00:28:46,228 - USBMonitor.APIClient - INFO - [api_client.py:174] - API client shutdown complete
+2026-02-09 00:28:46,228 - USBMonitor - INFO - [usb_monitor_client.py:172] - Shutdown complete
+2026-02-09 16:42:24,532 - USBMonitor - INFO - [usb_monitor_client.py:38] - ============================================================
+2026-02-09 16:42:24,533 - USBMonitor - INFO - [usb_monitor_client.py:39] - USB Monitoring Client Starting
+2026-02-09 16:42:24,533 - USBMonitor - INFO - [usb_monitor_client.py:40] - ============================================================
+2026-02-09 16:42:24,533 - USBMonitor - INFO - [usb_monitor_client.py:44] - Device ID: DESKTOP-CD6N3N9
+2026-02-09 16:42:24,534 - USBMonitor - INFO - [usb_monitor_client.py:48] - Username: Bhumi
+2026-02-09 16:42:24,534 - USBMonitor.APIClient - INFO - [api_client.py:48] - Retry thread started
+2026-02-09 16:42:26,588 - USBMonitor.APIClient - INFO - [api_client.py:161] - Server connection test successful
+2026-02-09 16:42:26,589 - USBMonitor - INFO - [usb_monitor_client.py:61] - Successfully connected to server
+2026-02-09 16:42:26,600 - USBMonitor.FileAccessMonitor - INFO - [file_access_monitor.py:47] - File Access Monitor initialized
+2026-02-09 16:42:26,601 - USBMonitor.EventDetector - INFO - [event_detector.py:186] - File access monitoring enabled
+2026-02-09 16:42:26,602 - USBMonitor.EventDetector - INFO - [event_detector.py:194] - USB Detector initialized for Windows
+2026-02-09 16:42:26,603 - USBMonitor - INFO - [usb_monitor_client.py:147] - Starting USB monitoring...
+2026-02-09 16:42:26,604 - USBMonitor.EventDetector - INFO - [event_detector.py:346] - USB monitoring loop started
+2026-02-09 16:42:26,604 - USBMonitor.EventDetector - INFO - [event_detector.py:445] - USB monitoring started
+2026-02-09 16:42:26,605 - USBMonitor - INFO - [usb_monitor_client.py:152] - Monitoring active (poll interval: 2s)
+2026-02-09 16:57:45,799 - USBMonitor.EventDetector - INFO - [event_detector.py:357] - USB drive inserted: E:\
+2026-02-09 16:57:45,807 - USBMonitor - INFO - [usb_monitor_client.py:130] - Event: usb_inserted - E:\ - None
+2026-02-09 16:57:45,829 - USBMonitor.EventDetector - INFO - [event_detector.py:307] - Started file monitoring for E:\
+2026-02-09 16:57:45,830 - USBMonitor.FileAccessMonitor - INFO - [file_access_monitor.py:118] - Started file access monitoring for E:\
+2026-02-09 16:57:45,830 - USBMonitor.FileAccessMonitor - INFO - [file_access_monitor.py:195] - Started file access monitoring for E:\
+2026-02-09 16:57:47,927 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: usb_inserted - E:\
+2026-02-09 16:58:03,844 - USBMonitor.EventDetector - INFO - [event_detector.py:379] - USB drive removed: E:\
+2026-02-09 16:58:03,846 - USBMonitor.EventDetector - INFO - [event_detector.py:330] - Stopped file monitoring for E:\
+2026-02-09 16:58:05,842 - USBMonitor.FileAccessMonitor - INFO - [file_access_monitor.py:167] - Stopped file access monitoring for E:\
+2026-02-09 16:58:05,844 - USBMonitor.FileAccessMonitor - INFO - [file_access_monitor.py:223] - Stopped file access monitoring for E:\
+2026-02-09 16:58:05,844 - USBMonitor - INFO - [usb_monitor_client.py:130] - Event: usb_removed - E:\ - None
+2026-02-09 16:58:07,890 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: usb_removed - E:\
+2026-02-09 16:58:15,852 - USBMonitor.EventDetector - INFO - [event_detector.py:357] - USB drive inserted: E:\
+2026-02-09 16:58:15,853 - USBMonitor - INFO - [usb_monitor_client.py:130] - Event: usb_inserted - E:\ - None
+2026-02-09 16:58:15,856 - USBMonitor.EventDetector - INFO - [event_detector.py:307] - Started file monitoring for E:\
+2026-02-09 16:58:15,856 - USBMonitor.FileAccessMonitor - INFO - [file_access_monitor.py:118] - Started file access monitoring for E:\
+2026-02-09 16:58:15,856 - USBMonitor.FileAccessMonitor - INFO - [file_access_monitor.py:195] - Started file access monitoring for E:\
+2026-02-09 16:58:17,912 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: usb_inserted - E:\
+2026-02-09 16:58:21,211 - USBMonitor - INFO - [usb_monitor_client.py:130] - Event: file_modified - E:\ - Assignment 5.docx
+2026-02-09 16:58:23,275 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: file_modified - E:\
+2026-02-09 16:58:53,903 - USBMonitor.EventDetector - INFO - [event_detector.py:379] - USB drive removed: E:\
+2026-02-09 16:58:53,905 - USBMonitor.EventDetector - INFO - [event_detector.py:330] - Stopped file monitoring for E:\
+2026-02-09 16:58:55,878 - USBMonitor.FileAccessMonitor - INFO - [file_access_monitor.py:167] - Stopped file access monitoring for E:\
+2026-02-09 16:58:55,879 - USBMonitor.FileAccessMonitor - INFO - [file_access_monitor.py:223] - Stopped file access monitoring for E:\
+2026-02-09 16:58:55,879 - USBMonitor - INFO - [usb_monitor_client.py:130] - Event: usb_removed - E:\ - None
+2026-02-09 16:58:57,933 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: usb_removed - E:\
+2026-02-09 16:59:12,264 - USBMonitor - INFO - [usb_monitor_client.py:141] - Received signal 2, shutting down...
+2026-02-09 16:59:12,265 - USBMonitor - INFO - [usb_monitor_client.py:164] - Shutting down USB monitoring client...
+2026-02-09 16:59:12,266 - USBMonitor.EventDetector - INFO - [event_detector.py:449] - Stopping USB monitoring...
+2026-02-09 16:59:13,895 - USBMonitor.EventDetector - INFO - [event_detector.py:404] - USB monitoring loop stopped
+2026-02-09 16:59:13,896 - USBMonitor.EventDetector - INFO - [event_detector.py:466] - USB monitoring stopped
+2026-02-09 16:59:13,897 - USBMonitor.APIClient - INFO - [api_client.py:170] - Shutting down API client...
+2026-02-09 16:59:14,607 - USBMonitor.APIClient - INFO - [api_client.py:174] - API client shutdown complete
+2026-02-09 16:59:14,609 - USBMonitor - INFO - [usb_monitor_client.py:172] - Shutdown complete
+2026-02-11 15:38:43,277 - USBMonitor - INFO - [usb_monitor_client.py:38] - ============================================================
+2026-02-11 15:38:43,278 - USBMonitor - INFO - [usb_monitor_client.py:39] - USB Monitoring Client Starting
+2026-02-11 15:38:43,278 - USBMonitor - INFO - [usb_monitor_client.py:40] - ============================================================
+2026-02-11 15:38:43,278 - USBMonitor - INFO - [usb_monitor_client.py:44] - Device ID: DESKTOP-CD6N3N9
+2026-02-11 15:38:43,279 - USBMonitor - INFO - [usb_monitor_client.py:48] - Username: Bhumi
+2026-02-11 15:38:43,279 - USBMonitor.APIClient - INFO - [api_client.py:48] - Retry thread started
+2026-02-11 15:38:45,339 - USBMonitor.APIClient - INFO - [api_client.py:161] - Server connection test successful
+2026-02-11 15:38:45,340 - USBMonitor - INFO - [usb_monitor_client.py:61] - Successfully connected to server
+2026-02-11 15:38:45,353 - USBMonitor.FileAccessMonitor - INFO - [file_access_monitor.py:47] - File Access Monitor initialized
+2026-02-11 15:38:45,353 - USBMonitor.EventDetector - INFO - [event_detector.py:186] - File access monitoring enabled
+2026-02-11 15:38:45,354 - USBMonitor.EventDetector - INFO - [event_detector.py:194] - USB Detector initialized for Windows
+2026-02-11 15:38:45,354 - USBMonitor - INFO - [usb_monitor_client.py:147] - Starting USB monitoring...
+2026-02-11 15:38:45,355 - USBMonitor.EventDetector - INFO - [event_detector.py:346] - USB monitoring loop started
+2026-02-11 15:38:45,356 - USBMonitor.EventDetector - INFO - [event_detector.py:445] - USB monitoring started
+2026-02-11 15:38:45,356 - USBMonitor - INFO - [usb_monitor_client.py:152] - Monitoring active (poll interval: 2s)
+2026-02-11 15:44:54,084 - USBMonitor.EventDetector - INFO - [event_detector.py:357] - USB drive inserted: E:\
+2026-02-11 15:44:54,091 - USBMonitor - INFO - [usb_monitor_client.py:130] - Event: usb_inserted - E:\ - None
+2026-02-11 15:44:54,101 - USBMonitor.EventDetector - INFO - [event_detector.py:307] - Started file monitoring for E:\
+2026-02-11 15:44:54,102 - USBMonitor.FileAccessMonitor - INFO - [file_access_monitor.py:118] - Started file access monitoring for E:\
+2026-02-11 15:44:54,103 - USBMonitor.FileAccessMonitor - INFO - [file_access_monitor.py:195] - Started file access monitoring for E:\
+2026-02-11 15:44:54,121 - USBMonitor - INFO - [usb_monitor_client.py:130] - Event: file_modified - E:\ - WPSettings.dat
+2026-02-11 15:44:54,416 - USBMonitor - INFO - [usb_monitor_client.py:130] - Event: file_modified - E:\ - IndexerVolumeGuid
+2026-02-11 15:44:56,177 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: usb_inserted - E:\
+2026-02-11 15:44:56,195 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: file_modified - E:\
+2026-02-11 15:44:56,501 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: file_modified - E:\
+2026-02-11 15:44:57,768 - USBMonitor - INFO - [usb_monitor_client.py:130] - Event: file_modified - E:\ - Install SanDisk Software.exe
+2026-02-11 15:44:59,825 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: file_modified - E:\
+2026-02-11 15:45:32,496 - USBMonitor - INFO - [usb_monitor_client.py:130] - Event: file_modified - E:\ - bookmarks_12_4_24.html
+2026-02-11 15:45:34,560 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: file_modified - E:\
+2026-02-11 15:46:50,219 - USBMonitor.EventDetector - INFO - [event_detector.py:379] - USB drive removed: E:\
+2026-02-11 15:46:50,221 - USBMonitor.EventDetector - INFO - [event_detector.py:330] - Stopped file monitoring for E:\
+2026-02-11 15:46:52,186 - USBMonitor.FileAccessMonitor - INFO - [file_access_monitor.py:167] - Stopped file access monitoring for E:\
+2026-02-11 15:46:52,187 - USBMonitor.FileAccessMonitor - INFO - [file_access_monitor.py:223] - Stopped file access monitoring for E:\
+2026-02-11 15:46:52,187 - USBMonitor - INFO - [usb_monitor_client.py:130] - Event: usb_removed - E:\ - None
+2026-02-11 15:46:54,258 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: usb_removed - E:\
+2026-02-11 15:47:04,006 - USBMonitor.EventDetector - INFO - [event_detector.py:357] - USB drive inserted: E:\
+2026-02-11 15:47:04,010 - USBMonitor - INFO - [usb_monitor_client.py:130] - Event: usb_inserted - E:\ - None
+2026-02-11 15:47:04,014 - USBMonitor.EventDetector - INFO - [event_detector.py:307] - Started file monitoring for E:\
+2026-02-11 15:47:04,015 - USBMonitor.FileAccessMonitor - INFO - [file_access_monitor.py:118] - Started file access monitoring for E:\
+2026-02-11 15:47:04,017 - USBMonitor.FileAccessMonitor - INFO - [file_access_monitor.py:195] - Started file access monitoring for E:\
+2026-02-11 15:47:06,059 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: usb_inserted - E:\
+2026-02-11 15:47:12,025 - USBMonitor.EventDetector - INFO - [event_detector.py:379] - USB drive removed: E:\
+2026-02-11 15:47:12,028 - USBMonitor.EventDetector - INFO - [event_detector.py:330] - Stopped file monitoring for E:\
+2026-02-11 15:47:14,027 - USBMonitor.FileAccessMonitor - INFO - [file_access_monitor.py:167] - Stopped file access monitoring for E:\
+2026-02-11 15:47:14,035 - USBMonitor.FileAccessMonitor - INFO - [file_access_monitor.py:223] - Stopped file access monitoring for E:\
+2026-02-11 15:47:14,037 - USBMonitor - INFO - [usb_monitor_client.py:130] - Event: usb_removed - E:\ - None
+2026-02-11 15:47:16,101 - USBMonitor.APIClient - INFO - [api_client.py:98] - Event sent successfully: usb_removed - E:\
+2026-02-18 22:26:25,887 - USBMonitor - INFO - [usb_monitor_client.py:38] - ============================================================
+2026-02-18 22:26:25,890 - USBMonitor - INFO - [usb_monitor_client.py:39] - USB Monitoring Client Starting
+2026-02-18 22:26:25,890 - USBMonitor - INFO - [usb_monitor_client.py:40] - ============================================================
+2026-02-18 22:26:25,890 - USBMonitor - INFO - [usb_monitor_client.py:44] - Device ID: DESKTOP-CD6N3N9
+2026-02-18 22:26:25,893 - USBMonitor - INFO - [usb_monitor_client.py:48] - Username: Bhumi
+2026-02-18 22:26:25,895 - USBMonitor.APIClient - INFO - [api_client.py:48] - Retry thread started
+2026-02-18 22:26:27,976 - USBMonitor.APIClient - INFO - [api_client.py:161] - Server connection test successful
+2026-02-18 22:26:27,977 - USBMonitor - INFO - [usb_monitor_client.py:61] - Successfully connected to server
+2026-02-18 22:26:27,981 - USBMonitor.EventDetector - WARNING - [event_detector.py:192] - Could not enable file access monitoring: expected an indented block after function definition on line 110 (file_access_monitor.py, line 111)
+2026-02-18 22:26:27,981 - USBMonitor.EventDetector - INFO - [event_detector.py:198] - USB Detector initialized for Windows
+2026-02-18 22:26:27,982 - USBMonitor - INFO - [usb_monitor_client.py:147] - Starting USB monitoring...
+2026-02-18 22:26:27,983 - USBMonitor.EventDetector - INFO - [event_detector.py:350] - USB monitoring loop started
+2026-02-18 22:26:27,983 - USBMonitor.EventDetector - INFO - [event_detector.py:449] - USB monitoring started
+2026-02-18 22:26:27,984 - USBMonitor - INFO - [usb_monitor_client.py:152] - Monitoring active (poll interval: 2s)
