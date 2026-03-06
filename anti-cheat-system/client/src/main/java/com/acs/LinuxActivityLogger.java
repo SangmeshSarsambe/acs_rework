@@ -23,7 +23,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * Linux-specific implementation of ActivityLogger
  */
-public class LinuxActivityLogger implements ActivityLogger {
+public class LinuxActivityLogger implements IActivityLogger {
 
     public interface X11Extended extends X11 {
         X11Extended INSTANCE = Native.load("X11", X11Extended.class);

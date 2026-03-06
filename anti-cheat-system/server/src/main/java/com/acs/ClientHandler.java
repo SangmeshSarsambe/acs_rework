@@ -115,20 +115,21 @@ public class ClientHandler extends Thread {
     }
 
     public void disconnect() {
-        if (!isRunning) return;
+    if (!isRunning) return;
+    isRunning = false;
 
-        isRunning = false;
-        try {
-            if (reader != null) reader.close();
-            if (writer != null) writer.close();
-            if (socket != null && !socket.isClosed()) socket.close();
-            System.out.println("[Handler] Disconnected: " + clientId);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        ConnectionManager.removeClient(clientId);
+    try {
+        // Close socket FIRST to unblock readLine() immediately
+        if (socket != null && !socket.isClosed()) socket.close();
+        if (reader != null) reader.close();
+        if (writer != null) writer.close();
+    } catch (IOException e) {
+        e.printStackTrace();
     }
+
+    System.out.println("[Handler] Disconnected: " + clientId);
+    ConnectionManager.removeClient(clientId);
+}
 
     public String getClientInfo() {
         long timeSinceHeartbeat = (System.currentTimeMillis() - lastHeartbeat) / 1000;

@@ -78,7 +78,7 @@ public class SimpleClient {
             });
 
             // Wait for mDNS discovery
-            Thread.sleep(15000);
+            Thread.sleep(5000);
 
             if (!isConnected) {
                 System.out.println("[Client] Could not discover server. Exiting.");

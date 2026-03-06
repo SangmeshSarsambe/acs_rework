@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * Windows-specific implementation of ActivityLogger
  */
-public class WindowsActivityLogger implements ActivityLogger {
+public class WindowsActivityLogger implements IActivityLogger {
 
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 

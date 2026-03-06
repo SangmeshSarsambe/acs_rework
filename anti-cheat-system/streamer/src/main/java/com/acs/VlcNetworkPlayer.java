@@ -8,6 +8,8 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class VlcNetworkPlayer {
 
@@ -118,16 +120,32 @@ public class VlcNetworkPlayer {
     // ─────────────────────────────────────────────────────────────────────────
 
     private static String detectVlcPath() {
-        File f = new File("vlc");
-        if (f.exists() && f.isDirectory()) return f.getAbsolutePath();
-        f = new File("../vlc");
-        if (f.exists() && f.isDirectory()) return f.getAbsolutePath();
-        f = new File("C:\\Program Files\\VideoLAN\\VLC");
-        if (f.exists() && f.isDirectory()) return f.getAbsolutePath();
-        f = new File("C:\\Program Files (x86)\\VideoLAN\\VLC");
-        if (f.exists() && f.isDirectory()) return f.getAbsolutePath();
-        return "C:\\Program Files\\VideoLAN\\VLC";
-    }
+    // 1. JAR-relative (production / pendrive)
+    try {
+        Path jarDir = Paths.get(
+            VlcNetworkPlayer.class
+                .getProtectionDomain()
+                .getCodeSource()
+                .getLocation()
+                .toURI()
+        ).getParent();
+
+        File vlc = jarDir.resolve("vlc").toFile();
+        System.out.println("[VLC] Trying JAR-relative: " + vlc.getAbsolutePath());
+        if (vlc.exists() && vlc.isDirectory()) return vlc.getAbsolutePath();
+    } catch (Exception ignored) {}
+
+    // 2. Working directory (dev / IDE)
+    File vlc = new File("vlc");
+    System.out.println("[VLC] Trying working dir: " + vlc.getAbsolutePath());
+    if (vlc.exists() && vlc.isDirectory()) return vlc.getAbsolutePath();
+
+    // 3. System installed VLC fallback
+    File sys = new File("C:\\Program Files\\VideoLAN\\VLC");
+    if (sys.exists()) return sys.getAbsolutePath();
+
+    throw new RuntimeException("VLC not found. Place vlc/ folder next to the JAR.");
+}
 
     // ─────────────────────────────────────────────────────────────────────────
     // Standalone main — requires ip and port as arguments, no hardcoded values

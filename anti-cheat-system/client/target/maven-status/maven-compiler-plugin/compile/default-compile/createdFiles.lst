@@ -1,11 +1,10 @@
-com/acs/ActivityLogger.class
 com/acs/WindowsActivityLogger.class
 com/acs/LinuxActivityLogger$X11Extended$XErrorHandler.class
+com/acs/IActivityLogger.class
 com/acs/ActivityLoggerLauncher.class
 com/acs/SimpleClient.class
 com/acs/FFmpegCommandBuilder.class
 com/acs/LinuxActivityLogger.class
 com/acs/WindowTrackerUI.class
 com/acs/LinuxActivityLogger$X11Extended.class
-com/acs/ProcessExample.class
 com/acs/SimpleClient$1.class

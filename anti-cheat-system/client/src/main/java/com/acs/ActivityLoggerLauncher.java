@@ -8,7 +8,7 @@ public class ActivityLoggerLauncher {
 
     public static void main(String[] args) {
         try {
-            ActivityLogger logger = createLogger();
+           IActivityLogger logger = createLogger();
             
             System.out.println("Starting Activity Logger for " + logger.getPlatformName());
             System.out.println("Press Ctrl+C to stop logging");
@@ -32,7 +32,7 @@ public class ActivityLoggerLauncher {
      * @return ActivityLogger instance for the current platform
      * @throws UnsupportedOperationException if the OS is not supported
      */
-    private static ActivityLogger createLogger() {
+    private static IActivityLogger createLogger() {
         String os = System.getProperty("os.name").toLowerCase();
         
         if (os.contains("win")) {
