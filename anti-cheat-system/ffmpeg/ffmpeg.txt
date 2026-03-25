@@ -1,0 +1,1 @@
+download the ffmpeg.exe and move it to this folder for windows, and for ubuntu , just do sudo apt install ffmpeg
