@@ -9,33 +9,58 @@ import java.net.*;
 
 public class SimpleServer {
 
-    private static JmDNS          jmdns;
-    private static ServerSocket   serverSocket;
-    private static volatile boolean isRunning = true;
-    private static InetAddress     localAddress;
+    private static JmDNS             jmdns;
+    private static ServerSocket      serverSocket;
+    private static volatile boolean  isRunning = true;
+    private static InetAddress       localAddress;
 
-    private static final Object  shutdownLock      = new Object();
-    private static volatile boolean shutdownInitiated = false;
+    private static final Object      shutdownLock      = new Object();
+    private static volatile boolean  shutdownInitiated = false;
+
+    // ── Crash recovery state ──────────────────────────────────────────────────
+    // Set during startup if crash detected — passed to ServerUI so it starts
+    // with the correct button state (Stop Monitoring enabled, Start disabled)
+    private static volatile boolean restoredMonitoring = false;
 
     // ─────────────────────────────────────────────────────────────────────────
 
     public static void main(String[] args) {
+        System.setProperty("awt.useSystemAAFontSettings", "lcd");
+        System.setProperty("swing.aatext", "true");
+
+        // Prevent multiple server instances — bring existing window to front
+        SingleInstance.init("acs-server", null);
+
         try {
             localAddress = IPAddressUtil.getActualIPAddress();
+
+            // ── Check for crash recovery BEFORE launching UI ──────────────────
+            SessionManager.ServerState state = SessionManager.loadState();
+
+            if (state.isCrashRecovery()) {
+                System.out.println("[Server] ⚠ Crash detected — restoring session: "
+                        + state.sessionDir);
+                SessionManager.restoreSession(state.sessionDir, state.sessionStart);
+                ActivityState.setMonitoring(true);
+                restoredMonitoring = true;
+            } else {
+                System.out.println("[Server] Clean start");
+            }
 
             serverSocket = new ServerSocket(0);
             int actualPort = serverSocket.getLocalPort();
 
-            // ── mDNS registration ─────────────────────────────────────────
+            // ── mDNS registration ─────────────────────────────────────────────
             jmdns = JmDNS.create(localAddress);
             ServiceInfo serviceInfo = ServiceInfo.create(
                     "_acs._tcp.local.", "SimpleServer", actualPort,
                     "Anti Cheat System Server");
             jmdns.registerService(serviceInfo);
 
-            System.out.println("[Server] Started — " + localAddress.getHostAddress() + ":" + actualPort);
+            System.out.println("[Server] Started — "
+                    + localAddress.getHostAddress() + ":" + actualPort);
 
-            // ── Shutdown hook (Ctrl-C / System.exit) ──────────────────────
+            // ── Shutdown hook (Ctrl-C / System.exit) ──────────────────────────
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 if (!shutdownInitiated) {
                     System.out.println("\n[Server] Shutdown signal received");
@@ -43,22 +68,23 @@ public class SimpleServer {
                 }
             }));
 
-            // ── Launch Swing UI ───────────────────────────────────────────
+            // ── Launch Swing UI ───────────────────────────────────────────────
             final String ip   = localAddress.getHostAddress();
             final int    port = actualPort;
 
             SwingUtilities.invokeLater(() -> {
-                ServerUI ui = new ServerUI(ip, port);
+                ServerUI ui = new ServerUI(ip, port, restoredMonitoring);
                 ui.setVisible(true);
+                SingleInstance.setWindow(ui);
             });
 
-            // ── Accept connections (background thread) ────────────────────
+            // ── Accept connections (background thread) ────────────────────────
             Thread acceptThread = new Thread(SimpleServer::acceptConnections);
             acceptThread.setName("ConnectionAcceptor");
             acceptThread.setDaemon(false);
             acceptThread.start();
 
-            // ── Park the main thread until shutdown ───────────────────────
+            // ── Park the main thread until shutdown ───────────────────────────
             synchronized (shutdownLock) {
                 while (isRunning) {
                     try { shutdownLock.wait(); }
@@ -110,22 +136,34 @@ public class SimpleServer {
         System.out.println("[Server] Shutting down…");
 
         try {
-            // Stop any active stream
             ConnectionManager.broadcastMessage("STOP_STREAM");
             StreamManager.stopVlc();
 
-            // Disconnect all clients
+            // Stop monitoring if active — merges all client files
+            if (ActivityState.isMonitoring()) {
+                ConnectionManager.broadcastMessage("STOP_ACTIVITY");
+                ConnectionManager.broadcastMessage("STOP_KEYLOG");
+                ConnectionManager.broadcastMessage("STOP_USB");
+                ActivityState.setMonitoring(false);
+                SessionManager.stopSession();
+            }
+
+            // Kick all clients — merges any remaining
             ConnectionManager.disconnectAll();
 
-            // Close server socket
             if (serverSocket != null && !serverSocket.isClosed())
                 serverSocket.close();
 
-            // Unregister mDNS
             if (jmdns != null) {
                 jmdns.unregisterAllServices();
                 jmdns.close();
             }
+
+            // ── Mark clean shutdown — LAST thing written ──────────────────────
+            // This is the only place cleanShutdown=true is ever written.
+            // If we crash before reaching here, cleanShutdown stays false
+            // and next startup detects crash recovery correctly.
+            SessionManager.saveState(true);
 
             System.out.println("[Server] Shutdown complete");
 

@@ -1,7 +1,6 @@
 package com.acs.ui;
-//import com.acs.*;   // pulls in ClientHandler, ConnectionManager, StreamManager etc.
 
-import javax.swing.*; 
+import javax.swing.*;
 import java.awt.*;
 
 /**
