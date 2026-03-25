@@ -1,7 +1,12 @@
 /media/sangmesh/Windows-SSD/Sangmesh/TY SEM1/ACS/acs rework/anti-cheat-system/client/src/main/java/com/acs/LinuxActivityLogger.java
 /media/sangmesh/Windows-SSD/Sangmesh/TY SEM1/ACS/acs rework/anti-cheat-system/client/src/main/java/com/acs/SimpleClient.java
-/media/sangmesh/Windows-SSD/Sangmesh/TY SEM1/ACS/acs rework/anti-cheat-system/client/src/main/java/com/acs/WindowTrackerUI.java
+/media/sangmesh/Windows-SSD/Sangmesh/TY SEM1/ACS/acs rework/anti-cheat-system/client/src/main/java/com/acs/DeviceMonitor.java
 /media/sangmesh/Windows-SSD/Sangmesh/TY SEM1/ACS/acs rework/anti-cheat-system/client/src/main/java/com/acs/WindowsActivityLogger.java
 /media/sangmesh/Windows-SSD/Sangmesh/TY SEM1/ACS/acs rework/anti-cheat-system/client/src/main/java/com/acs/FFmpegCommandBuilder.java
 /media/sangmesh/Windows-SSD/Sangmesh/TY SEM1/ACS/acs rework/anti-cheat-system/client/src/main/java/com/acs/IActivityLogger.java
-/media/sangmesh/Windows-SSD/Sangmesh/TY SEM1/ACS/acs rework/anti-cheat-system/client/src/main/java/com/acs/ActivityLoggerLauncher.java
+/media/sangmesh/Windows-SSD/Sangmesh/TY SEM1/ACS/acs rework/anti-cheat-system/client/src/main/java/com/acs/FileSender.java
+/media/sangmesh/Windows-SSD/Sangmesh/TY SEM1/ACS/acs rework/anti-cheat-system/client/src/main/java/com/acs/KeyLogger.java
+/media/sangmesh/Windows-SSD/Sangmesh/TY SEM1/ACS/acs rework/anti-cheat-system/client/src/main/java/com/acs/ActivityMonitor.java
+/media/sangmesh/Windows-SSD/Sangmesh/TY SEM1/ACS/acs rework/anti-cheat-system/client/src/main/java/com/acs/KeylogMonitor.java
+/media/sangmesh/Windows-SSD/Sangmesh/TY SEM1/ACS/acs rework/anti-cheat-system/client/src/main/java/com/acs/ClientLogger.java
+/media/sangmesh/Windows-SSD/Sangmesh/TY SEM1/ACS/acs rework/anti-cheat-system/client/src/main/java/com/acs/DeviceDetector.java
