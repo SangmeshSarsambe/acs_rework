@@ -1,0 +1,1 @@
+you have to paste vlc media player portable files containing its .exe in this directory

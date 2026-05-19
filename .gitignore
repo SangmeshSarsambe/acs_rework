@@ -1,0 +1,75 @@
+# =========================
+# Maven / Java
+# =========================
+target/
+build/
+out/
+*.class
+*.jar
+*.war
+*.ear
+
+# Maven generated
+dependency-reduced-pom.xml
+
+# =========================
+# IDE / Editor
+# =========================
+.idea/
+.vscode/
+*.iml
+
+# =========================
+# Logs / Runtime Data
+# =========================
+logs/
+client_logs/
+*.log
+
+# =========================
+# Build Outputs / Packages
+# =========================
+output/
+*.AppImage
+
+# =========================
+# OS Files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# FFmpeg
+# Ignore binaries but keep docs
+# =========================
+ffmpeg/**
+!ffmpeg/
+!ffmpeg/README.md
+!ffmpeg/README.txt
+
+# =========================
+# VLC
+# Ignore binaries but keep docs
+# =========================
+vlc/**
+!vlc/
+!vlc/README.md
+!vlc/README.txt
+!vlc/instructions.txt
+
+# =========================
+# Secrets / Local Config
+# =========================
+keys.txt
+
+# Optional local-only settings
+ui_scale.properties
+
+# =========================
+# Keep launcher scripts
+# =========================
+!*.bat
+!*.sh
+
+# Misc
+tree.txt

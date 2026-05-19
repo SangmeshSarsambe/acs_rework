@@ -1,0 +1,1 @@
+you have to paste ffmpeg.exe in this ffmpeg directory in order to be able to run on windows
